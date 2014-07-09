@@ -1,0 +1,30 @@
+
+header {
+	height: 200px;
+	width: 100%;
+	position: fixed;
+	background-color: Crimson;
+	z-index: 5;
+}
+
+#main {
+	top: 200px;
+	position: relative;
+}
+
+.header-button {
+/*	padding-top: 20px;
+	padding-bottom: 20px;*/
+	height: 40px;
+	padding: 10px;
+	margin-right: 20px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.quote-container {
+	height: 200px;
+	width: 80%;
+	background-color: green;
+	margin-bottom: 40px;
+}
