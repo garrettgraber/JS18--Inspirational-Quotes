@@ -63,8 +63,7 @@ header {
 .radio-container {
 	height: 40px;
 	width: 80%;
-	right: 0;
-	display: inline-block;
+	display: inline;
 	border: 3px solid blue;
 	margin-left: 40px;
 	position: relative;
@@ -72,4 +71,5 @@ header {
 
 .delete-button {
 	display: inline-block;
+	padding: 20px;
 }
