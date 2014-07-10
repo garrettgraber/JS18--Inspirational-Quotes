@@ -5,6 +5,11 @@ header {
 	position: fixed;
 	background-color: Crimson;
 	z-index: 5;
+	top: 0;
+}
+
+#header {
+
 }
 
 #main {
@@ -23,8 +28,48 @@ header {
 }
 
 .quote-container {
+	position: relative;
 	height: 200px;
 	width: 80%;
 	background-color: green;
 	margin-bottom: 40px;
+	left: 20px;
+	padding: 15px;
+}
+
+.quote-text {
+	display: inline-block;
+	margin-right: 20px;
+}
+
+.quote-author {
+	display: inline-block;
+	margin-right: 20px;
+}
+
+.quote-rating {
+	display: inline-block;
+	margin-right: 20px;
+}
+
+.rate-button {
+	height: 50px;
+	width: 50px;
+	left: 30px;
+	padding: 10px;
+	position: relative;
+}
+
+.radio-container {
+	height: 40px;
+	width: 80%;
+	right: 0;
+	display: inline-block;
+	border: 3px solid blue;
+	margin-left: 40px;
+	position: relative;
+}
+
+.delete-button {
+	display: inline-block;
 }
