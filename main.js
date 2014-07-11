@@ -19,52 +19,54 @@ var QuoteObject = function(idValue, quoteText, quoteAuthor, quoteRating) {
 	this.quoteAuthor = quoteAuthor;
 	this.quoteRating = quoteRating;
 	this.valID = idValue;
+	this.radioCheck = null;
 	var that = this;
-	console.log(this.valID);
 	
 	this.render = function() {
-		console.log('Create DOM function has fired');
-		var tempJqueryObject = $('<div class="quote-container"><p class="quote-text">' + this.quoteText 
-			+ '</p><p class="quote-author"> - ' + this.quoteAuthor + '</p><div class="quote-rating">Rating:  ' 
-			+ this.averageValue + '</div><button class="delete-button">Delete</button>' 
-			+ '<form class="radio-container"><p>Radio Buttons</p>'
-			+ '<input class="rate-button rate1" type="radio"/><label>1</label>'
-			+ '<input class="rate-button rate2" type="radio"> 2'
-			+ '<input class="rate-button rate3" type="radio"> 3'
-			+ '<input class="rate-button rate4" type="radio"> 4'
-			+ '<input class="rate-button rate5" type="radio"> 5'
-			+ '</form>'
-			+ '</div>');
-		console.log('tempJqueryObject: ' + tempJqueryObject);
+		var tempJqueryObject = $('<div class="quote-container"><span class="quote-text">' + this.quoteText 
+			+ '</span><button class="quote-author"> - ' + this.quoteAuthor + '</button><div class="quote-rating">Rating:  ' 
+			+ this.averageValue + '</div><button class="delete-button">Delete</button></div>');
+		var radioFormJqueryObject = $('<form class="radio-container"><span>Radio Buttons</span></form>');
+		for(var i=1; i < 6; i++) {
+			var jqueryHtmlString =  '<input class="rate-button" type="radio">' + '<span>' + i.toString() + '</span>';
+			var inputFormJqueryObject = $(jqueryHtmlString);
+			inputFormJqueryObject.addClass('rate' + i);
+			if (this.radioCheck === i) { inputFormJqueryObject.prop('checked', true) }
+			// + '<input class="rate-button rate2" type="radio"> 2'
+			// + '<input class="rate-button rate3" type="radio"> 3'
+			// + '<input class="rate-button rate4" type="radio"> 4'
+			// + '<input class="rate-button rate5" type="radio"> 5'
+
+			radioFormJqueryObject.append(inputFormJqueryObject);
+		}
+		tempJqueryObject.append(radioFormJqueryObject);
 		tempJqueryObject = setElementID(tempJqueryObject, this.valID);
 		$('#main').prepend(tempJqueryObject);
-		console.log('render has finished');
 	};
 	this.remove = function(inProp) {
 		var outputArray = createQuoteObjectArray(inProp);
-		console.log('store has fired');
-		outputArray = removeObjectFromArray(this, outputArray);
+		outputArray = removeObjectFromArrayUnderscore(this, outputArray);
 		return turnArrayJsonAndStore(inProp, outputArray);
-	}
-
+	};
+	// Does not work properly
 	this.store = function(inProp) {
 		var outputArray = createQuoteObjectArray(inProp);
-		console.log('store has fired');
-
-		outputArray = removeObjectFromArray(this, outputArray);
+		outputArray = removeObjectFromArrayUnderscore(this, outputArray);
 		outputArray.unshift(this);
 		return turnArrayJsonAndStore(inProp, outputArray);
 	};
 	this.average = function() {
-		console.log('average method has fired: ' + Object.keys(this));
-		console.log('quote rating array: ' + this.quoteRating);
-		var sum = _.reduce(this.quoteRating, function(memo, num){ return memo + num; }, 0);
-		console.log('this.quoteRating.length: ' + this.quoteRating.length);
-		var newAverage = parseFloat( (sum/(that.quoteRating.length)).toFixed(2) );
-		this.averageValue = newAverage;
+		if(this.quoteRating.length !== 0) {
+			var sum = _.reduce(this.quoteRating, function(memo, num){ return memo + num; }, 0);
+			var newAverage = parseFloat( (sum/(that.quoteRating.length)).toFixed(2) );
+			this.averageValue = newAverage;
+		}
+		else {
+			var newAverage = 0;
+			this.averageValue = newAverage;
+		}
 		return newAverage;
 	};
-
 	this.averageValue = this.average();
 };
 
@@ -87,6 +89,11 @@ var removeObjectFromArray = function(tempObjectIn, inArray) {
 		console.log('You returned multiple objects with the same id');
 	}
 	return inArray;
+};
+
+var removeObjectFromArrayUnderscore = function(tempObjectIn, inArray) {
+	var outArray = _.reject(inArray, function(el) {return el === tempObjectIn });
+	return outArray;
 };
 
 var turnArrayJsonAndStore = function(inProp, inArray) {
@@ -129,7 +136,6 @@ var createQuoteObjectArray = function(inProp) {
 
 var storeObjectLocalStorage = function(inProp, inObject) {
 	var outputArray = createQuoteObjectArray( inProp );
-	console.log('outputArray: ' + outputArray);
 	outputArray.unshift(inObject);
 	return turnArrayJsonAndStore(inProp, outputArray);
 };
@@ -152,29 +158,40 @@ var setElementID = function(jqueryObject, currentObjectId) {
 
 var createNewId = function(typeId, currentIdTemp) {
 	var currentIdTemp = currentIdTemp + 10;
-	console.log('currentIdValue: ' + currentIdTemp);
 	var newId = typeId + currentIdTemp.toString();
-	console.log('newId: ' + newId);
 	currentIdValue = currentIdTemp;
 	return newId;
 };
 
-var c = [new QuoteObject(createNewId(idQuoteBase, currentIdValue), 'hello', 'GOD', [0,1,2,3,3]), new QuoteObject(createNewId(idQuoteBase, currentIdValue), 'herroo', 'Chairman Meow', [5,2,3]), new QuoteObject(createNewId(idQuoteBase, currentIdValue), 'suck it', 'Me', [ 5, 4 ] ) ];
+var appendQuotesToMain = function(inArray) {
 
-var appendListToMainContainer = function(inArray) {
+	if(inArray.length === undefined) {inArray = [inArray]};
+
+	inArray = sortByRating(inArray);
+	$('#main').empty();
 	for(var i=0; i < inArray.length; i++) {
 		var tempObject = inArray[ i ];
-
-		console.log('append list on: ' + i);
+		tempObject = createObjectWithMethods(tempObject);
 		tempObject.render();
-
-		storeObjectLocalStorage(localStoreName, tempObject);
-		console.log('object has been stored');
 	}
 };
 
+var sortByRating = function(inArray) {
+
+	tempArray = inArray;
+	var outArray = _.sortBy(inArray, function(el) {return el.averageValue});
+	return outArray;
+};
+
+var tempArray;
+
+var c = [new QuoteObject(createNewId(idQuoteBase, currentIdValue), 'hello', 'GOD', [2,1,2,3,3]), new QuoteObject(createNewId(idQuoteBase, currentIdValue), 'herroo', 'Chairman Meow', [5,2,3]), new QuoteObject(createNewId(idQuoteBase, currentIdValue), 'suck it', 'Me', [ 1, 1 ] ) ];
+
+var tempQuoteObject1 = new QuoteObject(createNewId(idQuoteBase, currentIdValue), 'YES!', 'GOD', [2,1,2]);
+c.push(tempQuoteObject1);
 // Input quotes
-appendListToMainContainer(c);
+appendQuotesToMain(c);
+turnArrayJsonAndStore(localStoreName, c);
 
 $(document).on('ready', function() {
 
@@ -182,14 +199,9 @@ $(document).on('ready', function() {
 		event.preventDefault();
 		var tempTextValue = $('#quote-input').val();
 		var tempAuthorValue = $('#author-input').val();
-		console.log(tempTextValue);
-		console.log(tempAuthorValue);
-		alert('STOP!');
-		var tempQuoteObject = new QuoteObject(createNewId(idQuoteBase, currentIdValue), tempTextValue, tempAuthorValue, [0]);
-		
+		var tempQuoteObject = new QuoteObject(createNewId(idQuoteBase, currentIdValue), tempTextValue, tempAuthorValue, []);		
 		storeObjectLocalStorage(localStoreName, tempQuoteObject);
 		tempQuoteObject.render();
-		
 	});
 
 	$('.undo-delete-button').click(function() {
@@ -197,6 +209,7 @@ $(document).on('ready', function() {
 			var tempObject = createObjectWithMethods(lastDelete);
 			tempObject.render();
 			storeObjectLocalStorage(localStoreName, tempObject);
+			lastDelete = undefined;
 		}
 		else {
 			alert('No items have been deleted');
@@ -205,100 +218,68 @@ $(document).on('ready', function() {
 
 	$(document).on('click', '.delete-button', function() {
 		var containerObject = $(this).closest('.quote-container');
-		console.log($(this));
 		var containerObjectID = containerObject.attr("id");
-		console.log('containerObjectID: ' + containerObjectID);
 		var quoteArray = storageToArray(localStoreName);
-
 		var foundObject = findObjectWithCertainValue(quoteArray, 'valID', containerObjectID)
 		lastDelete = foundObject;
-		quoteArray = removeObjectFromArray(foundObject, quoteArray);
-		turnArrayJsonAndStore(localStoreName, quoteArray);
+		quoteArray = removeObjectFromArrayUnderscore(foundObject, quoteArray);
 		containerObject.remove();
+		appendQuotesToMain(quoteArray);
+		turnArrayJsonAndStore(localStoreName, quoteArray);
 	});
 
 	$(document).on('click', '.rate-button', function() {
-	//	console.log('radio button clicked');
-	//	console.log('Checked status: ' + $(this).is(':checked'));
 		var ratingObjectClass = $(this).attr('class');
 		var ratingObjectClassLength = ratingObjectClass.length;
 		var newRatingValue = parseInt(ratingObjectClass.slice(ratingObjectClassLength - 1, ratingObjectClassLength));
-
 		if( $(this).is(':checked') ) {
-
 			var rateButtonSiblings = $(this).siblings();
-
-
 			for(var i=0; i < rateButtonSiblings.length; i++) {
 				var tempJqueryObject = $(rateButtonSiblings[ i ]);
-				// console.log(tempJqueryObject + typeof tempJqueryObject);
 				if(tempJqueryObject.is(':checked')) {
 					tempJqueryObject.prop('checked', false);
 				}
 			}
-
 			var containerObject = $(this).closest('.quote-container');
-			// console.log($(this));
 			var containerObjectID = containerObject.attr("id");
-			console.log('containerObjectID: ' + containerObjectID);
 			var quoteArray = storageToArray(localStoreName);
-
-			console.log('quoteArray: ');
-			console.log(quoteArray);
-
 			var foundObject = findObjectWithCertainValue(quoteArray, 'valID', containerObjectID);
-		//Add rating to object
-
-			quoteArray = removeObjectFromArray(foundObject, quoteArray);
-
-
-			console.log('foundObject: ')
-			console.log(foundObject);
-
+			quoteArray = removeObjectFromArrayUnderscore(foundObject, quoteArray);
 			var foundObject = createObjectWithMethods(foundObject);
-
 			foundObject.quoteRating.push(newRatingValue);
-			
 			foundObject.average();
-
-			console.log('foundObject average: ')
-			console.log(foundObject.averageValue);
-
+			foundObject.radioCheck = newRatingValue;
 			quoteArray.unshift(foundObject);
-
-			console.log('foundObject: ')
-			console.log(foundObject);
-
-			console.log('quoteArray: ');
-			console.log(quoteArray);
-
-
-
+			appendQuotesToMain(quoteArray);
 			turnArrayJsonAndStore(localStoreName, quoteArray);
-
-			console.log(localStorage[ localStoreName ]);
-
-
-
-
-
-			// console.log('localStorage: ' + localStorage[localStoreName]);
-
-			// foundObject.remove();
-
-			// console.log('localStorage: ' + localStorage[localStoreName]);
-
-			// foundObject.quoteRating.push(newRatingValue);
-			
-			// foundObject.average();
-
-			// console.log('foundObject: ');
-			// console.log(foundObject);
-
-			// foundObject.store(localStoreName);
-
 		}
 	});
+
+	//add a pop-up
+	$('.random-quote').click(function() {
+		var quoteArray = createQuoteObjectArray(localStoreName);
+		var randomQuoteObject = _.sample(quoteArray);
+		alert(randomQuoteObject.toString());
+		console.log('quoteArray: ');
+		console.log(quoteArray);
+	});
+
+	$('.go-main').click(function() {
+		var quoteArray = createQuoteObjectArray(localStoreName);
+		appendQuotesToMain(quoteArray);
+
+	});
+
+	$(document).on('click', '.quote-author', function() {
+		console.log( $(this).text() );
+		var tempAuthorValue = $(this).text().slice(3);
+		console.log('author event handler working: ' + tempAuthorValue);
+		var quoteArray = createQuoteObjectArray(localStoreName);
+		console.log('tempAuthorValue: ' + tempAuthorValue);
+		var outArray = findObjectWithCertainValue(quoteArray, 'quoteAuthor', tempAuthorValue)
+		appendQuotesToMain(outArray);
+	});
+
 
   
 });
