@@ -4,18 +4,29 @@
   <meta charset="utf-8">
   <title>Untitled</title>
   <link rel="stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.1/normalize.min.css">
+  <!--
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+  -->
   <link rel="stylesheet" type="text/css" href="main.css">
 </head>
 <body>
 
 	
 	<header>
-		<nav><button class="go-main header-button">Main</button><button class="random-quote header-button">Random Quote</button></nav>
-		<nav><button class="random-button header-button">Do Something Random</button><button class="undo-delete-button header-button">Undo Delete</button></nav>
-		<form>Quote: 
-			<textarea id="quote-input" rows="4" cols="30" name="quote-input"></textarea>
-			Author: <input id="author-input" type="text">
-			<button class="add-quote header-button" type="submit">Add Quote</button>
+		<nav><button class="go-main header-button">Main</button><button class="random-quote header-button">Random Quote</button><button class="undo-delete-button header-button">Undo Delete</button></nav>
+		
+		<form class="input-form">
+			<div class="header-container">Quote: 
+				<div class="head-sub-container">
+					<textarea id="quote-input" rows="4" cols="30" name="quote-input"></textarea>
+				</div>
+				<div class="head-sub-container more-left">
+				Author:  <input id="author-input" type="text">
+				</div>
+			</div>
+			<div class="header-container">
+				<button class="add-quote header-button" type="submit">Add Quote</button>
+			</div>
 		</form>
 	</header>
 
@@ -40,6 +51,9 @@
 	
   <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
   <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+  <!--
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+  -->
   <script src="main.js"></script>
 
 </body>

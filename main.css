@@ -1,40 +1,41 @@
 
 header {
-	height: 200px;
+	height: 240px;
 	width: 100%;
 	position: fixed;
-	background-color: Crimson;
+	background-color: black;
+	color: white;
 	z-index: 5;
 	top: 0;
+}
+
+nav {
+	height: 60px;
 }
 
 #header {
 
 }
 
-#main {
-	top: 200px;
+.header-container {
 	position: relative;
+	height: 90px;
 }
 
-.header-button {
-/*	padding-top: 20px;
-	padding-bottom: 20px;*/
-	height: 40px;
-	padding: 10px;
-	margin-right: 20px;
-	margin-top: 5px;
-	margin-bottom: 5px;
+#main {
+	top: 260px;
+	position: relative;
 }
 
 .quote-container {
 	position: relative;
 	height: 200px;
-	width: 80%;
-	background-color: green;
+	width: 800px;
 	margin-bottom: 40px;
 	left: 20px;
 	padding: 15px;
+	border: 3px solid black;
+	border-radius: 30px;
 }
 
 .quote-text {
@@ -45,37 +46,138 @@ header {
 
 .quote-author {
 	display: inline-block;
-	margin-right: 20px;
 	border: 3px solid black;
 	padding: 10px;
+	background-color: red;
+	color: white;
+	border-radius: 19px;
+	float: right;
+}
+
+.quote-author:hover {
+	background-color: Crimson;
+}
+
+.header-button {
+/*	padding-top: 20px;
+	padding-bottom: 20px;*/
+	height: 40px;
+	padding-left: 20px;
+	padding-right: 20px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	margin-top: 10px;
+	margin-left: 20px;
+	border-radius: 19px;
+	background-color: #CDFFFF;
+	color: black;
+}
+
+.header-button:hover {
+	background-color: #4FD5D6;
+}
+
+/*.quote-input {
+	display: inline-block;
+	position: absolute;
+	margin-left: 20px;
+}*/
+
+.author-input {
+	display: inline-block;
+	position: absolute;
+}
+
+.head-sub-container {
+	display: inline-block;
+	position: absolute;
+	left: 60px;
+}
+
+.more-left {
+	left: 370px;
+}
+
+.input-form {
+	height: 140px;
+	position: relative;
+}
+
+.add-quote {
+	display: inline-block;
+	position: absolute;
+	top: 25px;
+	left: 20px;
+	margin: auto;
 }
 
 .quote-rating {
 	display: inline-block;
+	position: absolute;
+	bottom: 31px;
 	margin-right: 20px;
+	left: 30px;
 }
 
 .rate-button {
 	height: 50px;
 	width: 50px;
-	left: 30px;
+	left: 100px;
 	padding: 10px;
 	position: relative;
+	display: inline-block;
 }
 
 .radio-container {
 	height: 50px;
 	width: 52%;
-	display: block;
-	border: 3px solid blue;
+	display: inline-block;
+	border: 5px solid blue;
 	margin-left: 40px;
-	position: absolute;
-	bottom: 15px;
-	right: 15px;
+	position: relative;
+	bottom: 0;
 	padding: 10px;
+	float: right;
+	border-radius: 30px;
+}
+
+.radio-title {
+	display: inline-block;
+	position: absolute;
+	top: 28px;
+}
+
+.rate-title {
+	position: relative;
+	left: 34px;
+	bottom: 16px;
 }
 
 .delete-button {
 	display: inline-block;
-	padding: 20px;
+	position: absolute;
+	bottom: 20px;
+	height: 40px;
+	border-radius: 19px;
+	background-color: #CDFFFF;
+	padding-left: 20px;
+	padding-right: 20px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	left: 160px;
+}
+
+.delete-button:hover {
+	background-color: #4FD5D6;
+	top: 20px;
+}
+
+.top-container {
+	height: 120px;
+	position: relative;
+}
+
+.bottom-container {
+	height: 80px;
+	position: relative;
 }

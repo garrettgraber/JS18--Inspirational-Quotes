@@ -23,12 +23,15 @@ var QuoteObject = function(idValue, quoteText, quoteAuthor, quoteRating) {
 	var that = this;
 	
 	this.render = function() {
-		var tempJqueryObject = $('<div class="quote-container"><span class="quote-text">' + this.quoteText 
-			+ '</span><button class="quote-author"> - ' + this.quoteAuthor + '</button><div class="quote-rating">Rating:  ' 
-			+ this.averageValue + '</div><button class="delete-button">Delete</button></div>');
-		var radioFormJqueryObject = $('<form class="radio-container"><span>Radio Buttons</span></form>');
+		var mainContainer = $( '<div class="quote-container"></div>');
+		var topContainerJquery = $('<div class="top-container"><span class="quote-text">' + this.quoteText 
+			+ '</span><button class="quote-author"> - ' + this.quoteAuthor + '</button></div>');
+		var bottomContainerJquery = $('<div class="bottom-container"><span class="quote-rating">Rating:  ' 
+			+ this.averageValue + '</span><button class="delete-button">Delete</button></div>');
+		var radioFormJqueryObject = $('<form class="radio-container"><div class="radio-title">Rate It:</div></form>');
+
 		for(var i=1; i < 6; i++) {
-			var jqueryHtmlString =  '<input class="rate-button" type="radio">' + '<span>' + i.toString() + '</span>';
+			var jqueryHtmlString =  '<input class="rate-button" type="radio">' + '<span class="rate-title">' + i.toString() + '</span>';
 			var inputFormJqueryObject = $(jqueryHtmlString);
 			inputFormJqueryObject.addClass('rate' + i);
 			if (this.radioCheck === i) { inputFormJqueryObject.prop('checked', true) }
@@ -39,9 +42,12 @@ var QuoteObject = function(idValue, quoteText, quoteAuthor, quoteRating) {
 
 			radioFormJqueryObject.append(inputFormJqueryObject);
 		}
-		tempJqueryObject.append(radioFormJqueryObject);
-		tempJqueryObject = setElementID(tempJqueryObject, this.valID);
-		$('#main').prepend(tempJqueryObject);
+
+		bottomContainerJquery.append(radioFormJqueryObject);
+		mainContainer.append(topContainerJquery);
+		mainContainer.append(bottomContainerJquery);		
+		mainContainer = setElementID(mainContainer, this.valID);
+		$('#main').prepend(mainContainer);
 	};
 	this.remove = function(inProp) {
 		var outputArray = createQuoteObjectArray(inProp);
