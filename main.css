@@ -40,18 +40,20 @@ nav {
 
 .quote-text {
 	display: inline-block;
-	margin-right: 20px;
-	text-shadow:1px 1px white;
+	margin-left: 20px;
+	margin-top: 10px;
 }
 
 .quote-author {
 	display: inline-block;
-	border: 3px solid black;
+	border: 3px solid Crimson;
 	padding: 10px;
+	height: 40px;
 	background-color: red;
 	color: white;
 	border-radius: 19px;
 	float: right;
+	clear: both;
 }
 
 .quote-author:hover {
@@ -77,15 +79,23 @@ nav {
 	background-color: #4FD5D6;
 }
 
-/*.quote-input {
+.quote-input {
 	display: inline-block;
 	position: absolute;
 	margin-left: 20px;
-}*/
+	left: 60px;
+}
 
 .author-input {
 	display: inline-block;
 	position: absolute;
+	left: 370px;
+	margin-left: 20px;
+}
+
+.input-color {
+	color: black;
+	background-color: white;
 }
 
 .head-sub-container {
@@ -99,7 +109,7 @@ nav {
 }
 
 .input-form {
-	height: 140px;
+	height: 90px;
 	position: relative;
 }
 
@@ -126,6 +136,10 @@ nav {
 	padding: 10px;
 	position: relative;
 	display: inline-block;
+}
+
+.rate-button:hover {
+	background-color: DarkGreen;
 }
 
 .radio-container {
@@ -180,4 +194,28 @@ nav {
 .bottom-container {
 	height: 80px;
 	position: relative;
+}
+
+.pop-up-container {
+	position: relative;
+	height: 300px;
+	width: 900px;
+	top: 100px;
+	left: 20px;
+	position: fixed;
+	z-index: 10;
+	background-color: white;
+	border: 5px solid Khaki;
+	border-radius: 30px;
+}
+
+.pop-up-exit {
+	position: absolute;
+	float: left;
+	top: 240px;
+}
+
+.pop-up-container>.quote-container {
+	top: 20px;
+	border: 0;
 }

@@ -47,7 +47,7 @@ var QuoteObject = function(idValue, quoteText, quoteAuthor, quoteRating) {
 		mainContainer.append(topContainerJquery);
 		mainContainer.append(bottomContainerJquery);		
 		mainContainer = setElementID(mainContainer, this.valID);
-		$('#main').prepend(mainContainer);
+		return mainContainer;
 	};
 	this.remove = function(inProp) {
 		var outputArray = createQuoteObjectArray(inProp);
@@ -178,7 +178,8 @@ var appendQuotesToMain = function(inArray) {
 	for(var i=0; i < inArray.length; i++) {
 		var tempObject = inArray[ i ];
 		tempObject = createObjectWithMethods(tempObject);
-		tempObject.render();
+		var jqueryObject = tempObject.render();
+		$('#main').append(jqueryObject);
 	}
 };
 
@@ -186,7 +187,7 @@ var sortByRating = function(inArray) {
 
 	tempArray = inArray;
 	var outArray = _.sortBy(inArray, function(el) {return el.averageValue});
-	return outArray;
+	return outArray.reverse();
 };
 
 var tempArray;
@@ -195,6 +196,11 @@ var c = [new QuoteObject(createNewId(idQuoteBase, currentIdValue), 'hello', 'GOD
 
 var tempQuoteObject1 = new QuoteObject(createNewId(idQuoteBase, currentIdValue), 'YES!', 'GOD', [2,1,2]);
 c.push(tempQuoteObject1);
+
+var tempQuoteObject2 = new QuoteObject(createNewId(idQuoteBase, currentIdValue), "A person who won't read has no advantage over one who can't read.", 'Mark Twain', [4, 4, 5]);
+c.unshift(tempQuoteObject2);
+
+
 // Input quotes
 appendQuotesToMain(c);
 turnArrayJsonAndStore(localStoreName, c);
@@ -207,13 +213,15 @@ $(document).on('ready', function() {
 		var tempAuthorValue = $('#author-input').val();
 		var tempQuoteObject = new QuoteObject(createNewId(idQuoteBase, currentIdValue), tempTextValue, tempAuthorValue, []);		
 		storeObjectLocalStorage(localStoreName, tempQuoteObject);
-		tempQuoteObject.render();
+		var jqueryObject = tempQuoteObject.render();
+		$('#main').append(jqueryObject);
 	});
 
 	$('.undo-delete-button').click(function() {
 		if(lastDelete !== undefined) {
 			var tempObject = createObjectWithMethods(lastDelete);
-			tempObject.render();
+			var jqueryObject = tempObject.render();
+			$('#main').append(jqueryObject);
 			storeObjectLocalStorage(localStoreName, tempObject);
 			lastDelete = undefined;
 		}
@@ -268,6 +276,13 @@ $(document).on('ready', function() {
 		alert(randomQuoteObject.toString());
 		console.log('quoteArray: ');
 		console.log(quoteArray);
+		console.log('random quote: ');
+		console.log(randomQuoteObject);
+		var quoteJqueryObject = randomQuoteObject.render();
+
+		var popUpJquery = $('<div class="pop-up-container"><button class="pop-up-exit header-button">Exit</button></div>');
+		popUpJquery.append(quoteJqueryObject);
+		$('body').append(popUpJquery);
 	});
 
 	$('.go-main').click(function() {
@@ -286,6 +301,10 @@ $(document).on('ready', function() {
 		appendQuotesToMain(outArray);
 	});
 
+	$(document).on('click', '.pop-up-exit', function() {
+		var popUpContainer = $(this).closest('.pop-up-container');
+		popUpContainer.remove();
+	});
 
   
 });
